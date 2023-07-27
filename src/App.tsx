@@ -324,6 +324,14 @@ function App() {
       }
     }
 
+    const CreateShift: Raect.FC<any> = () => {
+      return (
+        <Typography color={"#3D3D3D"} fontWeight={"600"}>
+          hover
+        </Typography>
+      )
+    }
+
     return (
       <Div style={{display: "flex", flexDirection: "column", minWidth: "100%", width: "max-content"}}>
         {dates.map((datesValue: any, row: number) => {
@@ -355,9 +363,9 @@ function App() {
                       }
                     }}
                   >
-                    {row === 0 && col === 0 && <h1>view by emp</h1>}
-                    {row === 0 && col > 0 && <h1>emp</h1>}
-                    {row > 0 && col === 0 && <h1>dates</h1>}
+                    {row === 0 && col === 0 && <ViewByEmployees {...datesValue} />}
+                    {row === 0 && col > 0 && <EmployeeCard {...empValue} />}
+                    {row > 0 && col === 0 && <DateList />}
                     {row > 0 && col > 0 && (
                       <Div>
                         <Droppable key={cardPosition} droppableId={cardPosition}>
@@ -366,7 +374,7 @@ function App() {
                               <Draggable key={cardPosition} draggableId={cardPosition} index={col}>
                                 {(provided) => (
                                   <Div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                    <h1>shift</h1>
+                                    {findEmpShift ? <ShiftCard /> : <CreateShift />}
                                   </Div>
                                 )}
                               </Draggable>
