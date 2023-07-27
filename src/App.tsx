@@ -325,36 +325,22 @@ function App() {
     }
 
     return (
-      <Div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          // height:'90%',
-          minWidth: "100%",
-          width: "max-content"
-        }}
-      >
-        {/* <DragDropContext onDragEnd={handleDragEnd}> */}
+      <Div style={{display: "flex", flexDirection: "column", minWidth: "100%", width: "max-content"}}>
         {dates.map((datesValue: any, row: number) => {
           return (
-            <Div
-              key={row}
-              style={{
-                display: "flex",
-                // minWidth:'100%',
-                borderTop: 0,
-                // width:'max-content',
-                border: "1px solid #D9D9D9",
-                height: "30%"
-              }}
-            >
+            <Div key={`date-row-${row}`} style={{display: "flex", borderTop: 0, border: "1px solid #D9D9D9", height: "30%"}}>
               {employees.map((empValue: any, col: number) => {
                 const {findEmpShift, findEmpShiftIndex} = findEmpShiftDateForCell(empValue.dates, datesValue.date)
+
                 const cardPosition = `{"cardIndex":${findEmpShiftIndex},"row":${row},"col":${col},"date":"${datesValue.date}"}`
 
                 return (
+                  //   <Droppable key={cardPosition} droppableId={cardPosition}>
+                  //     {(provided) => (
                   <Div
-                    key={`row-${col}`}
+                    // {...provided.droppableProps}
+                    // ref={provided.innerRef}
+                    key={`row-${row}-row-${col}-layer`}
                     style={{
                       ...{
                         display: "flex",
@@ -366,73 +352,39 @@ function App() {
                         borderBottom: 0,
                         minWidth: 200,
                         width: "50%"
-                      },
-                      ...(row === 0 &&
-                        col === 0 && {
-                          borderTop: 0,
-                          borderBottom: 0,
-                          position: "sticky",
-                          left: 0,
-                          bgcolor: "white",
-                          zIndex: 0
-                        }),
-                      ...(row > 0 &&
-                        col === 0 && {
-                          borderTop: 0,
-                          borderBottom: 0,
-                          position: "sticky",
-                          left: 0,
-                          bgcolor: "white",
-                          zIndex: 0
-                        }),
-                      ...(row > 0 && col > 0 && {zIndex: -1, borderTop: 0})
+                      }
                     }}
                   >
-                    {row === 0 && col === 0 && <ViewByEmployees />}
-                    {row === 0 && col > 0 && <EmployeeCard {...empValue} />}
-                    {row > 0 && col === 0 && <DateList {...datesValue} />}
+                    {row === 0 && col === 0 && <h1>view by emp</h1>}
+                    {row === 0 && col > 0 && <h1>emp</h1>}
+                    {row > 0 && col === 0 && <h1>dates</h1>}
                     {row > 0 && col > 0 && (
-                      <Div key={`row:${row}-col:${col}-layers`} style={{width: "100%"}}>
-                        {findEmpShift ? (
-                          <Droppable key={`{"cardIndx":${findEmpShiftIndex},"row":${row},"col":${col},"date":"${datesValue.date}"}`} droppableId={`{"cardIndx":${findEmpShiftIndex},"row":${row},"col":${col},"date":"${datesValue.date}"}`}>
-                            {(provided) => (
-                              <div className="hello" {...provided.droppableProps} ref={provided.innerRef}>
-                                <Draggable key={cardPosition} draggableId={cardPosition} index={findEmpShiftIndex}>
-                                  {(datas) => (
-                                    <div {...datas.draggableProps} {...datas.dragHandleProps} ref={datas.innerRef} className="flex">
-                                      <ShiftCard />
-                                    </div>
-                                  )}
-                                </Draggable>
-                                {provided.placeholder}
-                              </div>
-                            )}
-                          </Droppable>
-                        ) : (
-                          <Droppable key={`{"cardIndx":${findEmpShiftIndex},"row":${row},"col":${col},"date":"${datesValue.date}"}`} droppableId={`{"cardIndx":${findEmpShiftIndex},"row":${row},"col":${col},"date":"${datesValue.date}"}`}>
-                            {(provided) => (
-                              <div {...provided.droppableProps} ref={provided.innerRef}>
-                                <Draggable key={cardPosition} draggableId={cardPosition} index={findEmpShiftIndex}>
-                                  {(datas) => (
-                                    <div {...datas.draggableProps} {...datas.dragHandleProps} ref={datas.innerRef}>
-                                      <span>hover</span>
-                                    </div>
-                                  )}
-                                </Draggable>
-                                {provided.placeholder}
-                              </div>
-                            )}
-                          </Droppable>
-                        )}
+                      <Div>
+                        <Droppable key={cardPosition} droppableId={cardPosition}>
+                          {(provided) => (
+                            <Div {...provided.droppableProps} ref={provided.innerRef} key={`row-${row}-row-${col}`}>
+                              <Draggable key={cardPosition} draggableId={cardPosition} index={col}>
+                                {(provided) => (
+                                  <Div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+                                    <h1>shift</h1>
+                                  </Div>
+                                )}
+                              </Draggable>
+                              {provided.placeholder}
+                            </Div>
+                          )}
+                        </Droppable>
                       </Div>
                     )}
+                    {/* {provided.placeholder} */}
                   </Div>
+                  //     )}
+                  //   </Droppable>
                 )
               })}
             </Div>
           )
         })}
-        {/* </DragDropContext> */}
       </Div>
     )
   }
@@ -602,57 +554,7 @@ function App() {
               }}
             >
               <Div>
-                <Div style={{display: "flex", flexDirection: "column", minWidth: "100%", width: "max-content"}}>
-                  {dates.map((datesValue: any, row: number) => {
-                    return (
-                      <Div key={`date-row-${row}`} style={{display: "flex", borderTop: 0, border: "1px solid #D9D9D9", height: "30%"}}>
-                        {employees.map((empValue: any, col: number) => {
-                          console.log("datesValue :::", datesValue)
-                          return (
-                            <Droppable key={`row-${row}-col-${col}`} droppableId={`row-${row}-col-${col}`}>
-                              {(provided) => (
-                                <Div
-                                  {...provided.droppableProps}
-                                  ref={provided.innerRef}
-                                  key={`row-${row}-row-${col}`}
-                                  style={{
-                                    ...{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                      border: "1px solid #D9D9D9",
-                                      p: 0.8,
-                                      borderLeft: 0,
-                                      borderBottom: 0,
-                                      minWidth: 200,
-                                      width: "50%"
-                                    }
-                                  }}
-                                >
-                                  {row === 0 && col === 0 && <h1>view by emp</h1>}
-                                  {row === 0 && col > 0 && <h1>emp</h1>}
-                                  {row > 0 && col === 0 && <h1>dates</h1>}
-                                  {row > 0 && col > 0 && (
-                                    <Div>
-                                      <Draggable key={`row-${row}-col-${col}`} draggableId={`row-${row}-col-${col}`} index={col}>
-                                        {(provided) => (
-                                          <Div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                            <h1>shift</h1>
-                                          </Div>
-                                        )}
-                                      </Draggable>
-                                    </Div>
-                                  )}
-                                  {provided.placeholder}
-                                </Div>
-                              )}
-                            </Droppable>
-                          )
-                        })}
-                      </Div>
-                    )
-                  })}
-                </Div>
+                <Calender dates={dates} employees={employees} />
               </Div>
             </DragDropContext>
           </Div>
