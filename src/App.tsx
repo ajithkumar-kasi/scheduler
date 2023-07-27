@@ -72,7 +72,6 @@ function App() {
   }
 
   const findEmpShiftDateForCell = (dates: any, employeeDate: any) => {
-    console.log("dates :::", dates)
     const findEmpShift = dates.find((value) => dayjs(value).isSame(employeeDate))
     const findEmpShiftIndex = dates.findIndex((value) => dayjs(value).isSame(employeeDate))
     return {findEmpShift: !!findEmpShift, findEmpShiftIndex}
@@ -311,19 +310,6 @@ function App() {
       )
     }
 
-    const handleDragEnd = (result: any) => {
-      const {source, destination} = result
-      if (destination) {
-        const startPosition = JSON.parse(source.droppableId)
-        const targetPosition = JSON.parse(destination.droppableId)
-
-        const employeeList = Array.from(employees)
-        const [movedItem] = employeeList[startPosition.col].dates.splice(startPosition.cardIndx, 1)
-        const reOrderItems = employeeList[targetPosition.col].dates.push(targetPosition.date)
-        setEmployees(employeeList)
-      }
-    }
-
     const CreateShift: Raect.FC<any> = () => {
       return (
         <Typography color={"#3D3D3D"} fontWeight={"600"}>
@@ -397,6 +383,19 @@ function App() {
     )
   }
 
+  const handleDragEnd = (result: any) => {
+    const {source, destination} = result
+    if (destination) {
+      const startPosition = JSON.parse(source.droppableId)
+      const targetPosition = JSON.parse(destination.droppableId)
+
+      const employeeList = Array.from(employees)
+      const [movedItem] = employeeList[startPosition.col].dates.splice(startPosition.cardIndx, 1)
+      const reOrderItems = employeeList[targetPosition.col].dates.push(targetPosition.date)
+      setEmployees(employeeList)
+    }
+  }
+
   const CalenderSection = styled("div")({
     display: "flex",
     flexDirection: "column",
@@ -423,8 +422,6 @@ function App() {
   const handleClickedCard = (card: any) => {
     console.log("handleClickedCard :::", card)
   }
-
-  console.log("dates :::", dates)
 
   return (
     <Div style={{display: "flex", "flex-direction": "column", hight: "100%"}}>
@@ -556,11 +553,7 @@ function App() {
         {/* calender section */}
         {dates.length && (
           <Div>
-            <DragDropContext
-              onDragEnd={(result: any) => {
-                console.log("result", result)
-              }}
-            >
+            <DragDropContext onDragEnd={handleDragEnd}>
               <Div>
                 <Calender dates={dates} employees={employees} />
               </Div>
