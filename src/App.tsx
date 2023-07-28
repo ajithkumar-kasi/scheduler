@@ -94,21 +94,21 @@ function App() {
       dates: [dayjs().format("YYYY-MM-DD")]
     },
     {
-      name: "Steve smith",
+      name: "Virat",
       initial: "SS",
       totalHrs: "24:00",
       shift: "3",
       dates: [dayjs().format("YYYY-MM-DD")]
     },
     {
-      name: "Steve smith",
+      name: "Dhoni",
       initial: "SS",
       totalHrs: "24:00",
       shift: "3",
       dates: [dayjs().add(2, "day").format("YYYY-MM-DD")]
     },
     {
-      name: "Steve smith",
+      name: "williams",
       initial: "SS",
       totalHrs: "24:00",
       shift: "3",
@@ -116,7 +116,7 @@ function App() {
     },
 
     {
-      name: "Steve smith",
+      name: "sachin",
       initial: "SS",
       totalHrs: "24:00",
       shift: "3",
@@ -349,9 +349,9 @@ function App() {
                       }
                     }}
                   >
-                    {row === 0 && col === 0 && <ViewByEmployees {...datesValue} />}
+                    {row === 0 && col === 0 && <ViewByEmployees />}
                     {row === 0 && col > 0 && <EmployeeCard {...empValue} />}
-                    {row > 0 && col === 0 && <DateList />}
+                    {row > 0 && col === 0 && <DateList {...datesValue} />}
                     {row > 0 && col > 0 && (
                       <Div>
                         <Droppable key={cardPosition} droppableId={cardPosition}>
@@ -387,11 +387,16 @@ function App() {
     const {source, destination} = result
     if (destination) {
       const startPosition = JSON.parse(source.droppableId)
+      console.log("startPos :::", startPosition)
       const targetPosition = JSON.parse(destination.droppableId)
+      console.log("targetPos :: ", targetPosition)
 
       const employeeList = Array.from(employees)
-      const [movedItem] = employeeList[startPosition.col].dates.splice(startPosition.cardIndx, 1)
+      console.log("prev employeeList :::", employeeList)
+      const [movedItem] = employeeList[startPosition.col].dates.splice(startPosition.cardIndex, 1)
+      console.log("movedItems :::", movedItem)
       const reOrderItems = employeeList[targetPosition.col].dates.push(targetPosition.date)
+      console.log("next employeeList :::", employeeList)
       setEmployees(employeeList)
     }
   }
